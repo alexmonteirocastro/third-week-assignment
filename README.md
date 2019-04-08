@@ -16,3 +16,9 @@ Use
 ```
 npm run server
 ```
+
+To run the eslint, use:
+
+```
+npm run pretest
+```
