@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "node_modules/.bin/nodemon index.js"
+    "server": "node_modules/.bin/nodemon index.js",
+    "pretest": "eslint --fix .; exit 0"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
     "koa-router": "^7.4.0"
   },
   "devDependencies": {
+    "eslint": "^5.16.0",
     "nodemon": "^1.18.10"
   }
 }
