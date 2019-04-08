@@ -2,6 +2,9 @@
 
 const Koa = require('koa');
 const Router = require('koa-router');
+const pino = require('pino');
+const logger = pino({ prettyPrint: true });
+  
 const bodyParser = require('koa-body-parser');
 const articles = require('./articles');
 
@@ -12,12 +15,14 @@ const PORT = 3000;
 app.context.articles = articles;
 
 router.get('/', async (ctx, next) => {
+	logger.info(ctx.request.method, ctx.request.url);
 	ctx.body = 'Hello and Welcome to the Articles RESTful API!';
 	ctx.res.statusCode = 200;
 	next();
 });
 
 router.get('/api/articles', async (ctx, next) => {
+	logger.info(ctx.request.method, ctx.request.url);
 	const listOfArticles = [];
 	ctx.articles.forEach((value, key) => listOfArticles.push({id: key, articleText: value}));
 	ctx.set('Content-Type', 'application/json');
@@ -27,6 +32,7 @@ router.get('/api/articles', async (ctx, next) => {
 });
  
 router.get('/api/articles/:id', async (ctx, next) => {
+	logger.info(ctx.request.method, ctx.request.url);
 	const articleId = Number(ctx.params.id);
 	if(!ctx.articles.has(articleId)){
 		ctx.throw(404, 'Article not found.');
@@ -38,6 +44,7 @@ router.get('/api/articles/:id', async (ctx, next) => {
 });
 
 router.post('/api/articles', async (ctx, next) => {
+	logger.info(ctx.request.method, ctx.request.url);
 	if(!ctx.request.body.text){
 		ctx.throw(400, 'Article text is required.');
 		next();
@@ -49,6 +56,7 @@ router.post('/api/articles', async (ctx, next) => {
 });
 
 router.patch('/api/articles/:id', async (ctx, next) => {
+	logger.info(ctx.request.method, ctx.request.url);
 	const articleId = Number(ctx.params.id);
 	if(!ctx.articles.has(articleId)){
 		ctx.throw(404, 'Article not found.');
@@ -61,6 +69,7 @@ router.patch('/api/articles/:id', async (ctx, next) => {
 });
 
 router.delete('/api/articles/:id', async (ctx, next)=> {
+	logger.info(ctx.request.method, ctx.request.url);
 	const articleId = Number(ctx.params.id);
 	if(!ctx.articles.has(articleId)){
 		ctx.throw(404, 'Article not found.');
@@ -76,5 +85,5 @@ app
 	.use(bodyParser())
 	.use(router.routes())
 	.use(router.allowedMethods())
-	.on('error', err => console.error('server error', err))
-	.listen(PORT, () => console.log('Up and running on port ' + PORT));
+	.on('error', err => logger.info('server error', err))
+	.listen(PORT, () => logger.info('Up and running on port ' + PORT));
