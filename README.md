@@ -9,6 +9,14 @@ This weeks homework assignment consisted in creating a KOA based RESTful API tha
 The data set used was not content from a database, and it was not an array either. 
 The data set of articles was being stored in a JavaScript map. This was especially interesting given that with maps, CRUD operations become much more intuitive. 
 
+### Installing dependencies
+
+Run
+
+```
+npm install
+```
+
 ### Running the application
 
 Use 
